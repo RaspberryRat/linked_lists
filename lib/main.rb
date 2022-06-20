@@ -47,14 +47,16 @@ class LinkedList
   end
 
   def at(index, location = 0, node = @head)
-    return "#{node.node_name} | #{node.node_value}" if location == index
+    return node if location == index
 
     at(index, location += 1, node.next)
   end
 
   def pop
     # removes last  element in the list
-    list.delete_at(-1)
+    list_size = size
+    @tail = at(list_size.to_i - 2)
+    @tail.update_next_node
   end
 
   def contains?(value)
@@ -104,7 +106,7 @@ class Node
     @next_node
   end
 
-  def update_next_node(node)
+  def update_next_node(node = nil)
     @next_node = node
   end
 
@@ -142,4 +144,12 @@ print "#{l.size}\n\n"
 
 print "#{l.at(3)}\n\n"
 
-print "#{l.at(1)}\n\n"
+print "index 1: #{l.at(1).name} and value: #{l.at(1).value}\n\n"
+print "#{l.tail}: #{l.tail.name} | #{l.tail.value}\n\n"
+
+l.pop
+
+print "#{l}\n\n"
+
+print "#{l.size}\n\n"
+
