@@ -6,51 +6,35 @@ class LinkedList
     @tail = nil
   end
 
-  # if prepend called
-  # check if @head == nil, if so, assign to head, not sure about pointer yet
-  # if not nil, assign new node to head, point next_value to previous head
-
-  def navigate_list(node = @head, prev_node = nil)
+  def find_final_node(node = @head, prev_node = nil)
     #first find when next_node == nil
     # then go back to previous non-nil, areturn to append, so new @tail can be properly linked to previous tails @next node
     return prev_node if node.nil?
-    final_node = navigate_list(node.next, prev_node = node)
 
-    final_node
-
+    find_final_node(node.next, prev_node = node)
   end
 
   def append(value)
     return @head = Node.new(value) if @tail.nil? && @head.nil?
 
     @tail = Node.new(value)
-    final_node = navigate_list
+    final_node = find_final_node
     final_node.update_next_node(@tail)
     # adds a new node containined value to end of list
   end
 
   def prepend(value)
-    if @head.nil?
-      new_head = Node.new(value)
-    else
-      previous_head = @head
-      new_head = Node.new(value, previous_head)
-    end
-    update_head(new_head)
-    # adds a new node containing a value to the start of the list
+    return @head = Node.new(value) if @head.nil?
+
+    previous_head = @head
+    @head = Node.new(value, previous_head)
   end
 
-  def update_head(new_node)
-    @head = new_node
-  end
-
-  def update_tail(new_node)
-    @tail = new_node
-  end
-
-  def size
-    list.length
+  def size(node = @head, count = 0)
     # returns total number of nodes in list
+    return count if node.nil?
+
+    size(node.next, count += 1)
   end
 
   def head
@@ -62,9 +46,10 @@ class LinkedList
     @tail
   end
 
-  def at(index)
-    # returns node at index location
-    list[index]
+  def at(index, location = 0, node = @head)
+    return "#{node.node_name} | #{node.node_value}" if location == index
+
+    at(index, location += 1, node.next)
   end
 
   def pop
@@ -119,8 +104,8 @@ class Node
     @next_node
   end
 
-  def update_next_node(new_next_node)
-    @next_node = new_next_node
+  def update_next_node(node)
+    @next_node = node
   end
 
   def node_value
@@ -142,15 +127,19 @@ class Node
 end
 
 l = LinkedList.new
-
 l.append(20)
 l.prepend("first")
 l.append(30)
-print "head = #{l.head}\n" 
-print "tail = #{l.tail}\n"
 l.prepend("second")
-print "head = #{l.head}\n"
+l.append(70)
+l.append(80)
 
-print l
 
-l.navigate_list
+
+print "#{l}\n\n"
+
+print "#{l.size}\n\n"
+
+print "#{l.at(3)}\n\n"
+
+print "#{l.at(1)}\n\n"
