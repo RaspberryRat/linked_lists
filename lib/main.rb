@@ -52,7 +52,7 @@ class LinkedList
     begin
       node.next
     rescue NoMethodError
-      nil
+      return nil
     else
       at(index, location += 1, node.next)
     end
@@ -106,7 +106,8 @@ class LinkedList
 
     return prepend(value) if previous_node_at_index.nil?
 
-    
+    new_node = Node.new(value, current_node_at_index)
+    previous_node_at_index.update_next_node(new_node)
   end
 
   def remove_at(index)
@@ -172,15 +173,17 @@ print "#{l.tail}: #{l.tail.name} | #{l.tail.value}\n\n"
 
 l.pop
 
-print "#{l}\n\n"
+print "#{l}\n\n" 
 
 print "#{l.size}\n\n"
 
 print "contains 30: #{l.contains?("30")}\n\n"
 
-print "Value: 30: at location: #{l.find(323)}\n\n"
+print "Value: 30: at location: #{l.find(30)}\n\n"
 
-print l.at(10)
-print l.at(3).name
+print l.at(19)
 
+print "#{l}\n\n" 
 
+l.insert_at("I'm new",2)
+print "#{l}\n\n" 
