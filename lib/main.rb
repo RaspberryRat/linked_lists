@@ -1,14 +1,11 @@
-require "pry-byebug"
-
 class LinkedList
   def initialize
     @head = nil
     @tail = nil
   end
 
+  # used to find the last node in list to update @tail
   def find_final_node(node = @head, prev_node = nil)
-    #first find when next_node == nil
-    # then go back to previous non-nil, areturn to append, so new @tail can be properly linked to previous tails @next node
     return prev_node if node.nil?
 
     find_final_node(node.next, prev_node = node)
@@ -18,9 +15,7 @@ class LinkedList
     return @head = Node.new(value) if @tail.nil? && @head.nil?
 
     @tail = Node.new(value)
-    final_node = find_final_node
-    final_node.update_next_node(@tail)
-    # adds a new node containined value to end of list
+    find_final_node.update_next_node(@tail)
   end
 
   def prepend(value)
@@ -31,14 +26,12 @@ class LinkedList
   end
 
   def size(node = @head, count = 0)
-    # returns total number of nodes in list
     return count if node.nil?
 
     size(node.next, count += 1)
   end
 
   def head
-    # returns node at position 0
     @head
   end
 
@@ -46,6 +39,7 @@ class LinkedList
     @tail
   end
 
+  # Find node at an index location. Begin/rescue needed if index doesn't exist
   def at(index, location = 0, node = @head)
     return node if location == index
 
@@ -56,14 +50,11 @@ class LinkedList
     else
       at(index, location += 1, node.next)
     end
-
-
   end
 
+  # Removes last node in linked list
   def pop
-    # removes last  element in the list
-    list_size = size
-    @tail = at(list_size.to_i - 2)
+    @tail = at(size.to_i - 2)
     @tail.update_next_node
   end
 
@@ -83,18 +74,13 @@ class LinkedList
     find(value, location += 1, node.next)
   end
 
+  # Changes print method to print out linked list of node name and node value
   def to_s(next_node = @head)
-    if next_node.nil?
-      print "nil\n"
-      return
-    end
-    # print linklist objects as strings
-    # format should be (value) -> (value) -> (value) - nil
-    # will need to navigate entire list to do this
+    return print "nil\n "if next_node.nil?
+  
     print "(#{next_node.node_name} | #{next_node.node_value}) -> "
     next_node = to_s(next_node.next)
   end
-
 
   def insert_at(value, index)
     return "No node at index\n" if index > size.to_i - 1
@@ -120,16 +106,14 @@ class LinkedList
     return @head = at(1) if previous_node_at_index.nil?
 
     previous_node_at_index.update_next_node(next_node_at_index)
-
-    
-
-
   end
 end
 
 class Node
+  # class variable needed to assign names
   @@number_of_nodes = 0
   attr_accessor :value, :name
+
   def initialize(value, next_node = nil)
     @value = value
     @next_node = next_node
@@ -153,6 +137,7 @@ class Node
     @name
   end
 
+  # Assigns a name to node starting from A - Z, then AA, BB
   def assign_name
     number_of_characters = @@number_of_nodes / 26 + 1
     node_name = []
