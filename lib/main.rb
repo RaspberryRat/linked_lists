@@ -12,13 +12,12 @@ class LinkedList
   # check if @head == nil, if so, assign to head, not sure about pointer yet
   # if not nil, assign new node to head, point next_value to previous head
 
-  def navigate_list(node = @head)
+  def navigate_list(node = @head, prev_node = nil)
     #first find when next_node == nil
     # then go back to previous non-nil, areturn to append, so new @tail can be properly linked to previous tails @next node
-    return node if node.next.nil?
-
-    print "#{node.node_name}: #{node.node_value}\n"
-    node = navigate_list(node.next)
+    return prev_node if node.nil?
+    final_node = navigate_list(node.next, prev_node = node)
+    final_node
   end
 
   def append(value)
@@ -83,7 +82,10 @@ class LinkedList
   end
 
   def to_s(next_node = @head)
-    return if next_node.nil?
+    if next_node.nil?
+      print "nil\n"
+      return
+    end
     # print linklist objects as strings
     # format should be (value) -> (value) -> (value) - nil
     # will need to navigate entire list to do this
@@ -143,5 +145,7 @@ print "head = #{l.head}\n"
 print "tail = #{l.tail}\n"
 l.prepend("second")
 print "head = #{l.head}\n"
-l.navigate_list
+
 print l
+
+l.navigate_list
