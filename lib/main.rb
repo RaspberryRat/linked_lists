@@ -97,8 +97,8 @@ class LinkedList
 
 
   def insert_at(value, index)
-    # inserts a new node with provided value at given index
-    # update next_node
+    return "No node at index\n" if index > size.to_i - 1
+
     current_node_at_index = at(index)
     previous_node_at_index = at(index.to_i - 1)
 
@@ -111,8 +111,19 @@ class LinkedList
   end
 
   def remove_at(index)
-    # removes node at given index
-    # update next_node
+    return "No node at index\n" if index > size.to_i - 1
+
+    previous_node_at_index = at(index.to_i - 1)
+    next_node_at_index = at(index.to_i + 1)
+
+    # sets index 1 to new head if remove_at called on head
+    return @head = at(1) if previous_node_at_index.nil?
+
+    previous_node_at_index.update_next_node(next_node_at_index)
+
+    
+
+
   end
 end
 
@@ -186,4 +197,7 @@ print l.at(19)
 print "#{l}\n\n" 
 
 l.insert_at("I'm new",2)
+print "#{l}\n\n" 
+l.remove_at(1)
+
 print "#{l}\n\n" 
