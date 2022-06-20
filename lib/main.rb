@@ -49,7 +49,15 @@ class LinkedList
   def at(index, location = 0, node = @head)
     return node if location == index
 
-    at(index, location += 1, node.next)
+    begin
+      node.next
+    rescue NoMethodError
+      nil
+    else
+      at(index, location += 1, node.next)
+    end
+
+
   end
 
   def pop
@@ -91,6 +99,14 @@ class LinkedList
   def insert_at(value, index)
     # inserts a new node with provided value at given index
     # update next_node
+    current_node_at_index = at(index)
+    previous_node_at_index = at(index.to_i - 1)
+
+    return append(value) if current_node_at_index.nil?
+
+    return prepend(value) if previous_node_at_index.nil?
+
+    
   end
 
   def remove_at(index)
@@ -163,4 +179,8 @@ print "#{l.size}\n\n"
 print "contains 30: #{l.contains?("30")}\n\n"
 
 print "Value: 30: at location: #{l.find(323)}\n\n"
+
+print l.at(10)
+print l.at(3).name
+
 
