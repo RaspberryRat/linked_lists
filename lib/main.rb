@@ -12,8 +12,14 @@ class LinkedList
   # check if @head == nil, if so, assign to head, not sure about pointer yet
   # if not nil, assign new node to head, point next_value to previous head
 
-  def navigate_list
+  def navigate_list(node = 0)
     #first find when next_node == nil
+    # then go back to previous non-nil, areturn to append, so new @tail can be properly linked to previous tails @next node
+    return node if node.nil?
+
+    node = navigate_list(@head.next)
+    puts node
+    node
   end
 
   def append(value)
@@ -80,6 +86,7 @@ class LinkedList
   def to_s
     # print linklist objects as strings
     # format should be (value) -> (value) -> (value) - nil
+    # will need to navigate entire list to do this
     print "#{@head.name} -> #{@head.next_node.name} -> #{@tail.name} - > nil \n\n"
   end
 
@@ -96,13 +103,17 @@ end
 
 class Node
   @@number_of_nodes = 0
-  attr_accessor :value, :next_node, :name
+  attr_accessor :value, :name
   def initialize(value, next_node = nil)
     @value = value
     @next_node = next_node
     @name = assign_name
     @@number_of_nodes += 1
   end
+
+  def next
+    @next_node
+  end 
 
   def assign_name
     number_of_characters = @@number_of_nodes / 26 + 1
@@ -122,14 +133,6 @@ print "head = #{l.head}\n"
 print "tail = #{l.tail}\n"
 l.prepend("second")
 print "head = #{l.head}\n"
-l.head
-l.head
-
-l.head
-l.head
-l.head
-l.head
-print l.list
-
+l.navigate_list
 
 print "full list: #{l}"
