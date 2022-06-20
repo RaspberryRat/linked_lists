@@ -19,10 +19,8 @@ class LinkedList
   end
 
   def prepend(value)
-    return @head = Node.new(value) if @head.nil?
-
-    previous_head = @head
-    @head = Node.new(value, previous_head)
+    new_head = Node.new(value, @head)
+    @head = new_head
   end
 
   def size(node = @head, count = 0)
