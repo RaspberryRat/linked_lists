@@ -4,16 +4,44 @@ class LinkedList
   attr_accessor :list
   def initialize
     @list = []
+    @head = nil
+    @tail = nil
+  end
+
+  # if prepend called
+  # check if @head == nil, if so, assign to head, not sure about pointer yet
+  # if not nil, assign new node to head, point next_value to previous head
+
+  def navigate_list
+    #first find when next_node == nil
   end
 
   def append(value)
-    list << Node.new.value(value) 
+  
+      #start at @head, follow linked list until nil 
+    new_tail = Node.new(value)
+    list << new_tail
+    update_tail(new_tail)
     # adds a new node containined value to end of list
   end
 
   def prepend(value)
-    list.unshift(Node.new.value(value))
+    if @head.nil?
+      new_head = Node.new(value)
+    else
+      previous_head = @head
+      new_head = Node.new(value, previous_head)
+    end
+    update_head(new_head)
     # adds a new node containing a value to the start of the list
+  end
+
+  def update_head(new_node)
+    @head = new_node
+  end
+
+  def update_tail(new_node)
+    @tail = new_node
   end
 
   def size
@@ -23,11 +51,11 @@ class LinkedList
 
   def head
     # returns node at position 0
-    list[0]
+    @head
   end
 
   def tail
-    list[-1]
+    @tail
   end
 
   def at(index)
@@ -52,6 +80,7 @@ class LinkedList
   def to_s
     # print linklist objects as strings
     # format should be (value) -> (value) -> (value) - nil
+    print "#{@head.name} -> #{@head.next_node.name} -> #{@tail.name} - > nil \n\n"
   end
 
   def insert_at(value, index)
@@ -66,36 +95,41 @@ class LinkedList
 end
 
 class Node
-  def value(node_value = nil)
-    [node_value, next_node]
+  @@number_of_nodes = 0
+  attr_accessor :value, :next_node, :name
+  def initialize(value, next_node = nil)
+    @value = value
+    @next_node = next_node
+    @name = assign_name
+    @@number_of_nodes += 1
   end
 
-  def next_node(pointer = nil)
-    pointer # should be to an index location right?
+  def assign_name
+    number_of_characters = @@number_of_nodes / 26 + 1
+    node_name = []
+    number_of_characters.times do
+      node_name.push((@@number_of_nodes % 26 + 65).chr)
+    end
+    node_name.join('')
   end
 end
 
 l = LinkedList.new
 
 l.append(20)
-l.prepend(100)
-l.append(40)
-l.prepend(0)
-l.prepend(743)
-puts "size of list: #{l.size}"
-print "first node in list: #{l.head}\n"
-print "last node in list: #{l.tail}\n"
-print "node at poistion 3: #{l.at(3)}\n"
-l.pop
+l.prepend("first")
+print "head = #{l.head}\n" 
+print "tail = #{l.tail}\n"
+l.prepend("second")
+print "head = #{l.head}\n"
+l.head
+l.head
+
+l.head
+l.head
+l.head
+l.head
+print l.list
 
 
-
-
-
-
-
-
-
-
-
-print "full list: #{l.list}"
+print "full list: #{l}"
