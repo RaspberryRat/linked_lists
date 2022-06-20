@@ -1,9 +1,7 @@
 require "pry-byebug"
 
 class LinkedList
-  attr_accessor :list
   def initialize
-    @list = []
     @head = nil
     @tail = nil
   end
@@ -17,15 +15,17 @@ class LinkedList
     # then go back to previous non-nil, areturn to append, so new @tail can be properly linked to previous tails @next node
     return prev_node if node.nil?
     final_node = navigate_list(node.next, prev_node = node)
+
     final_node
+
   end
 
   def append(value)
-  
-      #start at @head, follow linked list until nil 
-    new_tail = Node.new(value)
-    list << new_tail
-    update_tail(new_tail)
+    return @head = Node.new(value) if @tail.nil? && @head.nil?
+
+    @tail = Node.new(value)
+    final_node = navigate_list
+    final_node.update_next_node(@tail)
     # adds a new node containined value to end of list
   end
 
@@ -119,6 +119,10 @@ class Node
     @next_node
   end
 
+  def update_next_node(new_next_node)
+    @next_node = new_next_node
+  end
+
   def node_value
     @value
   end
@@ -141,6 +145,7 @@ l = LinkedList.new
 
 l.append(20)
 l.prepend("first")
+l.append(30)
 print "head = #{l.head}\n" 
 print "tail = #{l.tail}\n"
 l.prepend("second")
