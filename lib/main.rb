@@ -59,13 +59,20 @@ class LinkedList
     @tail.update_next_node
   end
 
-  def contains?(value)
-    # return true if value is in list
+  def contains?(value, node = @head)
+    return false if node.nil?
+
+    return true if node.value == value
+
+    contains?(value, node.next)
   end
 
-  def find(value)
-    # return index of node == value
-    return nil
+  def find(value, location = 0, node = @head)
+    return "Value not in list" if node.nil?
+
+    return location if node.value == value
+
+    find(value, location += 1, node.next)
   end
 
   def to_s(next_node = @head)
@@ -152,4 +159,8 @@ l.pop
 print "#{l}\n\n"
 
 print "#{l.size}\n\n"
+
+print "contains 30: #{l.contains?("30")}\n\n"
+
+print "Value: 30: at location: #{l.find(323)}\n\n"
 
